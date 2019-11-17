@@ -1,5 +1,4 @@
 # DodgeBuddy
 
 
-Blank Repo Template
 
