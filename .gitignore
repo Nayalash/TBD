@@ -1,6 +1,6 @@
 # Ignore IntelliJ Directory
 .idea
-.vscode
+.vscode/
 
 # Ignore MacOS File Script(s)
 **/.DS_Store
