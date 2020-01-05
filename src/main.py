@@ -25,6 +25,7 @@ purple = (138, 43, 226)
 bg = pygame.image.load("../assets/bg.png")
 shooter = pygame.image.load("../assets/shooter.png")
 pointer = pygame.image.load("../assets/pointer.png")
+over = pygame.image.load("../assets/over.png")
 
 screen = pygame.display.set_mode((dispWidth, dispHeight))
 
@@ -80,13 +81,14 @@ while running:
     screen.blit(bg, (0, 0))
 
     curr_interval += 1
-    if curr_interval >= interval and len(cubeHolder.cubes) <= 4:
+    if curr_interval >= interval and len(cubeHolder.cubes) <= 5:
         cubeHolder.addCube()
         curr_interval = 0
 
-    if (len(cubeHolder.cubes) >= 5):
+    if (len(cubeHolder.cubes) == 6):
         print("Game Over")
         screen.fill(white)
+        screen.blit(over, (400, 200))
         pygame.display.update()
 
 
