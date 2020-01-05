@@ -15,6 +15,7 @@ class Cube:
         Cube.id_base += 1
 
         self.color_id = random.randint(0, color_map_size - 1)
+        self.force_stationary = False
 
     def move(self):
         if not self.on_surface:
@@ -35,5 +36,4 @@ class CubeHolder:
         self.color_map_size = color_map_size
 
     def addCube(self):
-        last_index = len(self.cubes)
-        self.cubes.append(Cube(1000, 200 + self.posModifier * last_index, self.color_map_size))
+        self.cubes.append(Cube(1000, 0, self.color_map_size))
