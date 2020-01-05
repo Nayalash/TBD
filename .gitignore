@@ -5,6 +5,11 @@
 # Ignore MacOS File Script(s)
 **/.DS_Store
 
+
+# Ignore Floobits
+.flooignore
+.floo
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
