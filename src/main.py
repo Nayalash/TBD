@@ -86,6 +86,17 @@ in_game = False
 in_help = False
 in_shop = False
 
+
+def reset():
+    cubeHolder.cubes.clear()
+    c.id_base = 1
+    pro.projectiles.clear()
+
+    global score
+
+    score = 0
+
+
 cubeHolder.addCube()
 
 # Main Game Loop
@@ -99,13 +110,10 @@ while running:
             curr_game_over_ticks += 1
 
         if curr_game_over_ticks > game_over_ticks:
-            cubeHolder.cubes.clear()
-            c.id_base = 1
-            pro.projectiles.clear()
+            reset()
             curr_game_over_ticks = 0
             game_over_phase = False
             game_over = True
-            score = 0
 
         if game_over:
             screen.fill(white)
@@ -201,8 +209,11 @@ while running:
                 in_help = True
             elif event.key == pygame.K_b and not in_game and not in_help:
                 in_shop = True
-            elif event.key == pygame.K_1 and not in_game and (in_help or in_shop):
-                in_help, in_shop = False, False
+            elif event.key == pygame.K_1 and (in_game or in_help or in_shop):
+                if in_game:
+                    reset()
+                    game_restarted = True
+                in_help, in_shop, in_game = False, False, False
         if event.type == pygame.MOUSEBUTTONUP and not game_over and not game_over_phase:
             x, y = pygame.mouse.get_pos()
             target = y - 400
