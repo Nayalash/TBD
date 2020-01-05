@@ -4,7 +4,7 @@ from src import physics as p
 
 class Projectile:
 
-    speed = 7
+    speed = 60
 
     def __init__(self, x, y, target, distance, color_id):
         self.x = x

@@ -22,6 +22,8 @@ green = (0, 255, 0)
 purple = (138, 43, 226)
 
 bg = pygame.image.load("../assets/bg.png")
+shooter = pygame.image.load("../assets/shooter.png")
+pointer = pygame.image.load("../assets/pointer.png")
 
 screen = pygame.display.set_mode((dispWidth, dispHeight))
 
@@ -75,6 +77,7 @@ while running:
 
     screen.blit(bg, (0, 0))
 
+
     curr_interval += 1
     if curr_interval >= interval and len(cubeHolder.cubes) <= 4:
         cubeHolder.addCube()
@@ -84,7 +87,9 @@ while running:
     # y += slope * speed
     # pygame.draw.rect(screen, red, (x, y, 30, 30))
 
-    pygame.draw.rect(screen, color_map[color_id], (50, 50, 50, 50))
+    screen.blit(pointer, (10,10))
+    pygame.draw.rect(screen, color_map[color_id], (220, 20, 50, 50))
+
     for cube in cubeHolder.cubes:
         cubeRect = pygame.Rect(cube.x, cube.y, 103, 95)
         collided = False
@@ -103,7 +108,7 @@ while running:
             cube.move()
 
         draw_rect(screen, color_map[cube.color_id], (0, 0, 0), cubeRect, 3)
-        #pygame.draw.rect(screen, color_map[cube.color_id], cubeRect)
+        # pygame.draw.rect(screen, color_map[cube.color_id], cubeRect)
 
     for projectile in pro.projectiles:
         #projRect = pygame.Rect(projectile.x, projectile.y, 30, 30)
@@ -123,6 +128,8 @@ while running:
         # collision check end
         pygame.draw.circle(screen, color_map[projectile.color_id], (int(projectile.x), int(projectile.y)), 20)
         projectile.move()
+
+    screen.blit(shooter, (65,380))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
