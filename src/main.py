@@ -13,9 +13,6 @@ running = True
 dispHeight = 600
 dispWidth = 1200
 
-rectHeight = dispHeight - 300
-rectWidth = dispWidth / 4
-
 white = (255, 255, 255)
 blue = (0, 0, 255)
 red = (255, 0, 0)
@@ -37,7 +34,14 @@ rank = pygame.image.load("../assets/rank.png")
 shop = pygame.image.load("../assets/shop.png")
 back = pygame.image.load("../assets/back.png")
 helpD = pygame.image.load("../assets/helpD.png")
+shopD = pygame.image.load("../assets/shopD.png")
 
+bullet_sound = pygame.mixer.Sound('../assets/bullet.wav')
+button = pygame.mixer.Sound('../assets/button.wav')
+music = pygame.mixer.music.load('../assets/music.mp3')
+
+
+pygame.mixer.music.play(-1)
 
 screen = pygame.display.set_mode((dispWidth, dispHeight))
 
@@ -95,17 +99,15 @@ game_restarted = False
 in_game = False
 in_help = False
 in_shop = False
+in_rank = False
 
 
 def reset():
     cubeHolder.cubes.clear()
     c.id_base = 1
     pro.projectiles.clear()
-
     global score
-
     score = 0
-
 
 cubeHolder.addCube()
 
@@ -146,10 +148,6 @@ while running:
                 none_left = True
                 score += 2
 
-            # x += speed
-            # y += slope * speed
-            # pygame.draw.rect(screen, red, (x, y, 30, 30))
-
             screen.blit(pointer, (10, 10))
             screen.blit(back, (10, 200))
 
@@ -158,12 +156,12 @@ while running:
             for cube in cubeHolder.cubes:
                 cubeRect = pygame.Rect(cube.x, cube.y, 103, 95)
                 collided = False
+
                 for potCube in cubeHolder.cubes:
                     cube_id = cube.id
                     if cube_id != potCube.id and cube_id > potCube.id:
                         if cubeRect.colliderect(pygame.Rect(potCube.x, potCube.y, 100, 95)):
                             collided = True
-
                             supposed_diff = 95
                             cube.y -= (cube.y - potCube.y + supposed_diff)
                             cube.force_stationary = True
@@ -174,19 +172,16 @@ while running:
                     cube.move()
 
                 draw_rect(screen, color_map[cube.color_id], (0, 0, 0), cubeRect, 3)
-                # pygame.draw.rect(screen, color_map[cube.color_id], cubeRect)
 
             for projectile in pro.projectiles:
-                # projRect = pygame.Rect(projectile.x, projectile.y, 30, 30)
                 collided = False
-
-                # DO collision checking here TODO
                 for cube in cubeHolder.cubes:
                     projectileHitBox = pygame.Rect(projectile.x, projectile.y, 20, 20)
                     if projectileHitBox.colliderect(pygame.Rect(cube.x, cube.y, 100, 95)) and not game_over_phase:
                         if projectile.color_id == cube.color_id:
                             # collision here
                             score += 1
+
                             cubeHolder.cubes.remove(cube)
                             pro.projectiles.remove(projectile)
 
@@ -205,10 +200,17 @@ while running:
         if in_shop:
             screen.blit(bg, (0, 0))
             screen.blit(back, (10, 480))
+            screen.blit(shopD, (365,20))
+
         elif in_help:
             screen.blit(bg, (0, 0))
             screen.blit(back, (10, 480))
             screen.blit(helpD, (220,20))
+        elif in_rank:
+            screen.blit(bg, (0, 0))
+            screen.blit(back, (10, 480))
+            scoreText = font.render("TOP SCORE: " + str(score), 1, (0, 0, 0))
+            screen.blit(scoreText, (440, 240))
         else:
             screen.blit(bg, (0, 0))
             screen.blit(start, (440, 20))
@@ -223,21 +225,38 @@ while running:
             running = False
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_q:
+                button.play()
+                time.sleep(0.5)
                 running = False
             if event.key == pygame.K_r and in_game and game_over:
+                button.play()
                 game_over = False
                 game_restarted = True
             elif event.key == pygame.K_s and not in_game and not in_shop and not in_help:
+                button.play()
                 in_game = True
+            elif event.key == pygame.K_5 and in_shop:
+                button.play()
+                bg = pygame.image.load("../assets/bg1.jpg")
+            elif event.key == pygame.K_6 and in_shop:
+                button.play()
+                bg = pygame.image.load("../assets/bg2.jpg")
             elif event.key == pygame.K_h and not in_game:
+                button.play()
                 in_help = True
+            elif event.key == pygame.K_g and not in_game and not in_shop and not in_help:
+                button.play()
+                in_rank = True
             elif event.key == pygame.K_b and not in_game and not in_help:
+                button.play()
                 in_shop = True
-            elif event.key == pygame.K_1 and (in_game or in_help or in_shop):
+            elif event.key == pygame.K_1 and (in_game or in_help or in_shop or in_rank):
+                button.play()
                 if in_game:
                     reset()
                     game_restarted = True
-                in_help, in_shop, in_game = False, False, False
+                in_help, in_rank, in_shop, in_game = False, False, False, False
+
         if event.type == pygame.MOUSEBUTTONUP and not game_over and not game_over_phase:
             x, y = pygame.mouse.get_pos()
             target = y - 400
