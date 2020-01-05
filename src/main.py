@@ -4,6 +4,7 @@ from src import physics as p
 from src import cube as c
 from src import projectiles as pr
 import random
+import time
 
 pygame.init()
 
@@ -75,13 +76,19 @@ cubeHolder.addCube()
 # Main Game Loop
 while running:
 
-    screen.blit(bg, (0, 0))
 
+    screen.blit(bg, (0, 0))
 
     curr_interval += 1
     if curr_interval >= interval and len(cubeHolder.cubes) <= 4:
         cubeHolder.addCube()
         curr_interval = 0
+
+    if (len(cubeHolder.cubes) >= 5):
+        print("Game Over")
+        screen.fill(white)
+        pygame.display.update()
+
 
     # x += speed
     # y += slope * speed
