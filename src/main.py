@@ -25,10 +25,19 @@ purple = (138, 43, 226)
 font = pygame.font.SysFont("monospace", 64)
 
 bg = pygame.image.load("../assets/bg.png")
+
 shooter = pygame.image.load("../assets/shooter.png")
 pointer = pygame.image.load("../assets/pointer.png")
 over = pygame.image.load("../assets/over.png")
 gnd = pygame.image.load("../assets/gnd.png")
+start = pygame.image.load("../assets/start.png")
+help = pygame.image.load("../assets/help.png")
+quit = pygame.image.load("../assets/quit.png")
+rank = pygame.image.load("../assets/rank.png")
+shop = pygame.image.load("../assets/shop.png")
+back = pygame.image.load("../assets/back.png")
+
+
 screen = pygame.display.set_mode((dispWidth, dispHeight))
 
 # Title and Icon
@@ -141,6 +150,8 @@ while running:
             # pygame.draw.rect(screen, red, (x, y, 30, 30))
 
             screen.blit(pointer, (10, 10))
+            screen.blit(back, (10, 200))
+
             pygame.draw.rect(screen, color_map[color_id], (220, 20, 50, 50))
 
             for cube in cubeHolder.cubes:
@@ -178,6 +189,9 @@ while running:
                             cubeHolder.cubes.remove(cube)
                             pro.projectiles.remove(projectile)
 
+                        if projectile.color_id != cube.color_id:
+                            score -= 1
+
                             for c in cubeHolder.cubes:
                                 c.force_stationary = False
 
@@ -188,11 +202,17 @@ while running:
             screen.blit(shooter, (65, 380))
     else:
         if in_shop:
-            screen.fill(white)
+            screen.blit(bg, (0, 0))
         elif in_help:
-            screen.fill(green)
+            screen.blit(bg, (0, 0))
         else:
-            screen.fill(blue)
+            screen.blit(bg, (0, 0))
+            screen.blit(start, (440, 20))
+            screen.blit(shop, (440, 130))
+            screen.blit(rank, (440, 240))
+            screen.blit(help, (440, 350))
+            screen.blit(quit, (440, 460))
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
