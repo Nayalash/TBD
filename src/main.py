@@ -36,6 +36,7 @@ quit = pygame.image.load("../assets/quit.png")
 rank = pygame.image.load("../assets/rank.png")
 shop = pygame.image.load("../assets/shop.png")
 back = pygame.image.load("../assets/back.png")
+helpD = pygame.image.load("../assets/helpD.png")
 
 
 screen = pygame.display.set_mode((dispWidth, dispHeight))
@@ -203,8 +204,11 @@ while running:
     else:
         if in_shop:
             screen.blit(bg, (0, 0))
+            screen.blit(back, (10, 480))
         elif in_help:
             screen.blit(bg, (0, 0))
+            screen.blit(back, (10, 480))
+            screen.blit(helpD, (220,20))
         else:
             screen.blit(bg, (0, 0))
             screen.blit(start, (440, 20))
