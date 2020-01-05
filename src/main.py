@@ -22,11 +22,13 @@ red = (255, 0, 0)
 green = (0, 255, 0)
 purple = (138, 43, 226)
 
+font = pygame.font.SysFont("monospace", 64)
+
 bg = pygame.image.load("../assets/bg.png")
 shooter = pygame.image.load("../assets/shooter.png")
 pointer = pygame.image.load("../assets/pointer.png")
 over = pygame.image.load("../assets/over.png")
-
+gnd = pygame.image.load("../assets/gnd.png")
 screen = pygame.display.set_mode((dispWidth, dispHeight))
 
 # Title and Icon
@@ -44,6 +46,8 @@ x, y = 50, 200
 floor = 450
 
 speed = 5
+score = 0
+
 
 color_map = [
     (255, 255, 255),
@@ -77,8 +81,10 @@ cubeHolder.addCube()
 # Main Game Loop
 while running:
 
-
     screen.blit(bg, (0, 0))
+    screen.blit(gnd, (0, 580))
+    scoreText = font.render("SCORE: " + str(score), 1 , (0,0,0))
+    screen.blit(scoreText, (10, 130))
 
     curr_interval += 1
     if curr_interval >= interval and len(cubeHolder.cubes) <= 5:
@@ -86,10 +92,12 @@ while running:
         curr_interval = 0
 
     if (len(cubeHolder.cubes) == 6):
-        print("Game Over")
         screen.fill(white)
         screen.blit(over, (400, 200))
         pygame.display.update()
+
+    if (len(cubeHolder.cubes) == 0):
+        score += 2
 
 
     # x += speed
@@ -107,6 +115,7 @@ while running:
             if cube_id != potCube.id and cube_id > potCube.id:
                 if cubeRect.colliderect(pygame.Rect(potCube.x, potCube.y, 100, 95)):
                     collided = True
+
                     supposed_diff = 95
                     cube.y -= (cube.y - potCube.y + supposed_diff)
                     cube.force_stationary = True
@@ -122,12 +131,14 @@ while running:
     for projectile in pro.projectiles:
         #projRect = pygame.Rect(projectile.x, projectile.y, 30, 30)
         collided = False
+
         # DO collision checking here TODO
         for cube in cubeHolder.cubes:
             projectileHitBox = pygame.Rect(projectile.x, projectile.y, 20, 20)
             if projectileHitBox.colliderect(pygame.Rect(cube.x, cube.y, 100, 95)):
                 if projectile.color_id == cube.color_id:
                     # collision here
+                    score += 1
                     cubeHolder.cubes.remove(cube)
                     pro.projectiles.remove(projectile)
 
