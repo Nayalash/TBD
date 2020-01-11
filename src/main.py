@@ -1,10 +1,11 @@
 # Import Libraries
 import pygame
-from src import physics as p
-from src import cube as c
-from src import projectiles as pr
+import physics as p
+import cube as c
+import projectiles as pr
 import random
 import time
+import scoreSaver as s
 
 pygame.init()
 
@@ -122,6 +123,8 @@ while running:
             curr_game_over_ticks += 1
 
         if curr_game_over_ticks > game_over_ticks:
+            if(s.isHighScore(score)):
+                s.setHighScore(score)
             reset()
             curr_game_over_ticks = 0
             game_over_phase = False
@@ -131,7 +134,6 @@ while running:
             screen.fill(white)
             screen.blit(over, (400, 200))
         else:
-
             screen.blit(bg, (0, 0))
             screen.blit(gnd, (0, 580))
             scoreText = font.render("SCORE: " + str(score), 1, (0, 0, 0))
@@ -188,8 +190,8 @@ while running:
                         if projectile.color_id != cube.color_id:
                             score -= 1
 
-                            for c in cubeHolder.cubes:
-                                c.force_stationary = False
+                        for c in cubeHolder.cubes:
+                            c.force_stationary = False
 
                 # collision check end
                 pygame.draw.circle(screen, color_map[projectile.color_id], (int(projectile.x), int(projectile.y)), 20)
@@ -209,7 +211,7 @@ while running:
         elif in_rank:
             screen.blit(bg, (0, 0))
             screen.blit(back, (10, 480))
-            scoreText = font.render("TOP SCORE: " + str(score), 1, (0, 0, 0))
+            scoreText = font.render("TOP SCORE: " + str(s.getScore()), 1, (0, 0, 0))
             screen.blit(scoreText, (440, 240))
         else:
             screen.blit(bg, (0, 0))

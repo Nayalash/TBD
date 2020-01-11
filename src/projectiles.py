@@ -1,6 +1,6 @@
 import random
 
-from src import physics as p
+import physics as p
 
 class Projectile:
 
