@@ -1,4 +1,4 @@
-# Import Libraries
+# Import libraries and other files
 import pygame
 import physics as p
 import cube as c
@@ -14,16 +14,18 @@ running = True
 dispHeight = 600
 dispWidth = 1200
 
+# Define global RGB values for colors being used
 white = (255, 255, 255)
 blue = (0, 0, 255)
 red = (255, 0, 0)
 green = (0, 255, 0)
 purple = (138, 43, 226)
 
+# Set System-Wide Font and FontSize
 font = pygame.font.SysFont("monospace", 64)
 
+# Load Image Files
 bg = pygame.image.load("../assets/bg.png")
-
 shooter = pygame.image.load("../assets/shooter.png")
 pointer = pygame.image.load("../assets/pointer.png")
 over = pygame.image.load("../assets/over.png")
@@ -37,6 +39,7 @@ back = pygame.image.load("../assets/back.png")
 helpD = pygame.image.load("../assets/helpD.png")
 shopD = pygame.image.load("../assets/shopD.png")
 
+# Load Audio Files
 bullet_sound = pygame.mixer.Sound('../assets/bullet.wav')
 button = pygame.mixer.Sound('../assets/button.wav')
 music = pygame.mixer.music.load('../assets/music.mp3')
@@ -114,7 +117,7 @@ cubeHolder.addCube()
 
 # Main Game Loop
 while running:
-
+    # Define Screens
     if in_game:
         if len(cubeHolder.cubes) > 4:
             game_over_phase = True
@@ -260,6 +263,7 @@ while running:
                 in_help, in_rank, in_shop, in_game = False, False, False, False
 
         if event.type == pygame.MOUSEBUTTONUP and not game_over and not game_over_phase:
+            bullet_sound.play()
             x, y = pygame.mouse.get_pos()
             target = y - 400
             pro.add(target, 1000, color_id)
