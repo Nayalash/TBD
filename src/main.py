@@ -202,12 +202,15 @@ while running:
                 cubeRect = pygame.Rect(cube.x, cube.y, 103, 95)
                 collided = False
 
+                # Stack Checking
                 for potCube in cubeHolder.cubes:
                     cube_id = cube.id
+                    # Collision with top Rectangle
                     if cube_id != potCube.id and cube_id > potCube.id:
                         # Collision with bottom Rectangle
                         if cubeRect.colliderect(pygame.Rect(potCube.x, potCube.y, 100, 95)):
                             collided = True
+                            # Activate Gravity
                             supposed_diff = 95
                             cube.y -= (cube.y - potCube.y + supposed_diff)
                             cube.force_stationary = True
@@ -224,9 +227,13 @@ while running:
             # Collision Checking of Projectiles
             for projectile in pro.projectiles:
                 collided = False
+                # Collision with Cubes
                 for cube in cubeHolder.cubes:
+                    # Generate Hit Area
                     projectileHitBox = pygame.Rect(projectile.x, projectile.y, 20, 20)
+                    # Check For a Hit
                     if projectileHitBox.colliderect(pygame.Rect(cube.x, cube.y, 100, 95)) and not game_over_phase:
+                        # Action
                         if projectile.color_id == cube.color_id:
                             # Increment score on contact with projectiles
                             score += 1
@@ -331,4 +338,4 @@ while running:
             pro.add(target, 1000, color_id)
             gen_color()
 
-    pygame.display.update()
+    pygame.display.update() # Update Screen
